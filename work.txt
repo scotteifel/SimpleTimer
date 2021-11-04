@@ -1,0 +1,3 @@
+- Add reset button
+
+- Consider adding datetime to top label
