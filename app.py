@@ -1,6 +1,8 @@
 import tkinter as tk
 from db import *
-import datetime
+from datetime import datetime
+
+start_time = datetime.now().strftime("%I:%M %p")
 
 
 class MainWindow(tk.Frame):
@@ -17,31 +19,40 @@ class MainWindow(tk.Frame):
 
     def render_widgets(self):
         self.greeting = tk.Label(self.master, text='Welcome')
-
         self.count = tk.Label(self.master, text=self.timer)
-        self.greeting.place(x=65, y=40)
-        self.count.place(x=85, y=60)
+        self.sign_on_time = tk.Label(self.master, text='Start time: ' +
+                                     start_time)
+        self.pauseBtn = tk.Button(
+            self.master, text="Pause", command=self.pause)
 
-        self.sign_on_time = tk.Label(self.master, text='Start time:   ' +
-                                     str(self.timer))
+        self.greeting.place(x=65, y=15)
 
-        self.sign_on_time.place(x=60, y=15)
+        self.sign_on_time.place(x=45, y=40)
 
+        self.count.place(x=85, y=65)
+
+        self.pauseBtn.place(x=74, y=100)
+
+    # Starts the timer count
     def increment(self):
+        global routine
         new_time = int(self.count['text']) + 1
         increment_timer(new_time)
         self.count['text'] = str(new_time)
-        this = self.after(60000, self.increment)
+        routine = self.after(60000, self.increment)
+        return routine
 
-    # def save_day():
-    #
-    #     info = self.count['text']
-    #     crnt_time = datetime.time
-    #     print(datetime)
-    #     if
-    #
-    #     with open('record.txt', 'a+') as file:
-    #         file.write(info)
+    def pause(self):
+        global routine
+        self.after_cancel(routine)
+
+        if self.pauseBtn.cget('text') == 'Pause':
+            self.pauseBtn.config(text='Start')
+            self.after_cancel(routine)
+
+        else:
+            self.pauseBtn.config(text='Pause')
+            self.increment()
 
 
 if __name__ == "__main__":
