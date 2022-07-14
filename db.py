@@ -1,10 +1,5 @@
 import sqlite3
 
-
-with open('main.db'):
-    pass
-
-
 def start_timer():
     conn = sqlite3.connect('main.db')
     cur = conn.cursor()
@@ -23,6 +18,7 @@ def start_timer():
 
 
 def increment_timer(new_time):
+     
     conn = sqlite3.connect('main.db')
     cur = conn.cursor()
 

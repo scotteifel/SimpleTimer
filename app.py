@@ -1,7 +1,12 @@
+import os
+path = os.getcwd()
+if not os.path.isfile('main.db'):
+   with open(os.path.join(path, 'main.db'), 'w+') as file:
+     pass
+
 import tkinter as tk
 from db import *
 import time
-
 
 class MainWindow(tk.Frame):
 
