@@ -1,8 +1,6 @@
 import tkinter as tk
 from db import *
-from datetime import datetime
-
-start_time = datetime.now().strftime("%I:%M %p")
+import time
 
 
 class MainWindow(tk.Frame):
@@ -10,30 +8,41 @@ class MainWindow(tk.Frame):
     def __init__(self, master=None):
         super().__init__(master)
         self.master = master
-        self.timer = start_timer()[0]
         # Just start from zero.
         self.timer = 0
+        self.increment()
+        self.clockTimer()
+
         self.render_widgets()
         self.pack()
-        self.increment()
 
     def render_widgets(self):
         self.greeting = tk.Label(self.master, text='Welcome')
-        self.count = tk.Label(self.master, text=self.timer)
-        self.sign_on_time = tk.Label(self.master, text='Start time: ' +
-                                     start_time)
+
+        self.sign_on_time = tk.Label(
+            self.master, text='Start time: ' + time.strftime("%I:%M %p"))
+        self.current_time = tk.Label(
+            self.master)
+
+        self.count = tk.Label(
+            self.master, text=self.timer)
         self.pauseBtn = tk.Button(
             self.master, text="Pause", command=self.pause)
 
         self.greeting.place(x=65, y=15)
-
         self.sign_on_time.place(x=45, y=40)
+        self.current_time.place(x=37, y=65)
+        self.count.place(x=85, y=90)
+        self.pauseBtn.place(x=72, y=120)
 
-        self.count.place(x=85, y=65)
+    def clockTimer(self):
 
-        self.pauseBtn.place(x=74, y=100)
+        current_time = 'Current time: ' + time.strftime("%I:%M %p")
+        self.current_time.config(text=current_time)
+        self.current_time.after(100, self.clockTimer)
 
     # Starts the timer count
+
     def increment(self):
         global routine
         new_time = int(self.count['text']) + 1
@@ -56,9 +65,10 @@ class MainWindow(tk.Frame):
 
 
 if __name__ == "__main__":
-    timer = start_timer()
     root = tk.Tk()
-    root.geometry("200x150")
+    root.geometry("200x180")
+
+    # timer = start_timer()
     root.title('Code Timer')
     app = MainWindow(master=root)
     app.mainloop()

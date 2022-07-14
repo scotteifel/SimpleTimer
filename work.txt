@@ -1,3 +1,6 @@
 - Add reset button
 
-- Consider adding datetime to top label
+- Add a time label, divide the into hours when that is necessary
+
+- Add an option to choose when an alert should go off after a 
+  certain amount of time
