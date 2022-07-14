@@ -1,12 +1,12 @@
+import time
+from db import *
+import tkinter as tk
 import os
 path = os.getcwd()
 if not os.path.isfile('main.db'):
-   with open(os.path.join(path, 'main.db'), 'w+') as file:
-     pass
+    with open(os.path.join(path, 'main.db'), 'w+') as file:
+        pass
 
-import tkinter as tk
-from db import *
-import time
 
 class MainWindow(tk.Frame):
 
@@ -15,11 +15,10 @@ class MainWindow(tk.Frame):
         self.master = master
         # Just start from zero.
         self.timer = 0
-        self.increment()
-        self.clockTimer()
-
         self.render_widgets()
         self.pack()
+        self.increment()
+        self.clockTimer()
 
     def render_widgets(self):
         self.greeting = tk.Label(self.master, text='Welcome')
@@ -47,7 +46,6 @@ class MainWindow(tk.Frame):
         self.current_time.after(100, self.clockTimer)
 
     # Starts the timer count
-
     def increment(self):
         global routine
         new_time = int(self.count['text']) + 1
