@@ -72,6 +72,8 @@ class MainWindow(tk.Frame):
         self.after_cancel(routine)
 
         if self.pauseBtn.cget('text') == 'Pause':
+            # Upon restart, offsets the added minute from increment()
+            self.timer -= 1
             self.pauseBtn.config(text='Start')
             self.after_cancel(routine)
 
