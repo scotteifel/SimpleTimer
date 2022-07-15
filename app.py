@@ -8,12 +8,12 @@ if not os.path.isfile('main.db'):
     with open(os.path.join(path, 'main.db'), 'w+') as file:
         pass
 
-light_teal_bg_color = '#c3fae8'
-# width, height
 WIDTH = 200
 HEIGHT = 190
-# window_size = '200x190' str(WIDTH+'x'+str(HEIGHT))
 window_size = str(WIDTH)+'x'+str(HEIGHT)
+
+light_teal_bg_color = '#dbfcf1'
+font_color = '#27322e'
 
 
 class MainWindow(tk.Frame):
@@ -34,23 +34,23 @@ class MainWindow(tk.Frame):
 
     def render_widgets(self):
         self.greeting = tk.Label(
-            self.master, text='Code Timer', fg='#131917', bg=light_teal_bg_color, font=10)
+            self.master, text='Code Timer', fg=font_color, bg=light_teal_bg_color, font=10)
 
         self.sign_on_time = tk.Label(
-            self.master, text='Start time:   ' + time.strftime("%I:%M %p"), fg='#131917', bg=light_teal_bg_color)
+            self.master, text='Start time:   ' + time.strftime("%I:%M %p"), fg=font_color, bg=light_teal_bg_color)
         self.current_time = tk.Label(
-            self.master, fg='#131917', bg=light_teal_bg_color)
+            self.master, fg=font_color, bg=light_teal_bg_color)
 
         self.count = tk.Label(
-            self.master, text=self.timer, fg='#131917', bg=light_teal_bg_color)
+            self.master, text=self.timer, fg=font_color, bg=light_teal_bg_color)
         self.pauseBtn = tk.Button(
-            self.master, text="Pause", command=self.pause, fg='#131917')
+            self.master, text="Pause", command=self.pause, fg=font_color)
 
         self.greeting.place(x=61, y=17)
         self.sign_on_time.place(x=48, y=50)
         self.current_time.place(x=40, y=75)
         self.count.place(x=53, y=100)
-        self.pauseBtn.place(x=78, y=130)
+        self.pauseBtn.place(x=83, y=130)
 
     def clockTimer(self):
 
