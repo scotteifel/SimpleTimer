@@ -1,4 +1,5 @@
 import time
+from turtle import width
 from db import *
 import tkinter as tk
 import os
@@ -6,6 +7,13 @@ path = os.getcwd()
 if not os.path.isfile('main.db'):
     with open(os.path.join(path, 'main.db'), 'w+') as file:
         pass
+
+light_teal_bg_color = '#c3fae8'
+# width, height
+WIDTH = 200
+HEIGHT = 190
+# window_size = '200x190' str(WIDTH+'x'+str(HEIGHT))
+window_size = str(WIDTH)+'x'+str(HEIGHT)
 
 
 class MainWindow(tk.Frame):
@@ -16,28 +24,33 @@ class MainWindow(tk.Frame):
         # Just start from zero.
         self.timer = 0
         self.render_widgets()
-        self.pack()
         self.increment()
         self.clockTimer()
+        self.pack()
+
+        # Position the window
+        c = self.place_window_center(WIDTH, HEIGHT, -300)
+        self.master.geometry("%dx%d+%d+%d" % (c[0], c[1], c[2], c[3]))
 
     def render_widgets(self):
-        self.greeting = tk.Label(self.master, text='Welcome')
+        self.greeting = tk.Label(
+            self.master, text='Code Timer', fg='#131917', bg=light_teal_bg_color, font=10)
 
         self.sign_on_time = tk.Label(
-            self.master, text='Start time: ' + time.strftime("%I:%M %p"))
+            self.master, text='Start time:   ' + time.strftime("%I:%M %p"), fg='#131917', bg=light_teal_bg_color)
         self.current_time = tk.Label(
-            self.master)
+            self.master, fg='#131917', bg=light_teal_bg_color)
 
         self.count = tk.Label(
-            self.master, text=self.timer)
+            self.master, text=self.timer, fg='#131917', bg=light_teal_bg_color)
         self.pauseBtn = tk.Button(
-            self.master, text="Pause", command=self.pause)
+            self.master, text="Pause", command=self.pause, fg='#131917')
 
-        self.greeting.place(x=65, y=15)
-        self.sign_on_time.place(x=45, y=40)
-        self.current_time.place(x=37, y=65)
-        self.count.place(x=85, y=90)
-        self.pauseBtn.place(x=72, y=120)
+        self.greeting.place(x=61, y=17)
+        self.sign_on_time.place(x=48, y=50)
+        self.current_time.place(x=40, y=75)
+        self.count.place(x=53, y=100)
+        self.pauseBtn.place(x=78, y=130)
 
     def clockTimer(self):
 
@@ -45,12 +58,12 @@ class MainWindow(tk.Frame):
         self.current_time.config(text=current_time)
         self.current_time.after(100, self.clockTimer)
 
-    # Starts the timer count
+    # Start the timer
     def increment(self):
         global routine
-        new_time = int(self.count['text']) + 1
-        increment_timer(new_time)
-        self.count['text'] = str(new_time)
+        self.timer += 1
+        increment_timer(self.timer)
+        self.count['text'] = 'Total time: ' + str(self.timer) + ' min'
         routine = self.after(60000, self.increment)
         return routine
 
@@ -66,12 +79,25 @@ class MainWindow(tk.Frame):
             self.pauseBtn.config(text='Pause')
             self.increment()
 
+    # Enter window size, and a height-offset if ness., returns coords
+    def place_window_center(self, width, height, height_offset=0):
+        monitor_width = self.master.winfo_screenwidth()
+        monitor_height = self.master.winfo_screenheight()
+
+        x_coord = (monitor_width/2) - (width/2)
+        y_coord = (monitor_height/2) - (height/2)
+        if height_offset != 0:
+            y_coord += height_offset
+        return width, height, x_coord, y_coord
+
 
 if __name__ == "__main__":
     root = tk.Tk()
-    root.geometry("200x180")
+    root.geometry(window_size)
 
     # timer = start_timer()
     root.title('Code Timer')
+    root.config(bg=light_teal_bg_color)
+    root.resizable(False, False)
     app = MainWindow(master=root)
     app.mainloop()
