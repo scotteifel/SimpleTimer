@@ -1,9 +1,11 @@
-from cgitb import text
+# from cgitb import text
+import os
 import time
-from turtle import width
+# from turtle import width
 from db import *
 import tkinter as tk
-import os
+from winsound import Beep
+
 path = os.getcwd()
 if not os.path.isfile('main.db'):
     with open(os.path.join(path, 'main.db'), 'w+') as file:
@@ -16,6 +18,7 @@ window_size = str(WIDTH)+'x'+str(HEIGHT)
 light_teal_bg_color = '#dbfcf1'
 font_color = '#27322e'
 btn_bg_color = '#f4fefb'
+timer_green_bg = '#8ce99a'
 
 hero_font_size = 12
 body_font_size = 5
@@ -83,10 +86,10 @@ class MainWindow(tk.Frame):
     def set_time(self):
         timer = self.timer_entry.get()
         self.timer_val.set('Timer: ' + str(timer) + ' mins')
-        self.timer_entry.after(int(timer)*60000, self.timer_expired)
+        self.timer_entry.after(int(timer)*1000, self.timer_expired)
 
     def timer_expired(self):
-        self.alert_win = tk.Toplevel(self.master)
+        self.alert_win = tk.Toplevel(self.master, bg=timer_green_bg)
         self.alert_win.resizable(False, False)
 
         WIDTH_HEIGHT = 200, 100
@@ -102,8 +105,12 @@ class MainWindow(tk.Frame):
         self.alert_win.update()
         self.alert_win.attributes('-topmost', False)
 
-    # Start the timer
+        # Produce beeping noises to show timer is expired
+        Beep(2000, 110)
+        Beep(2000, 110)
+        Beep(2000, 110)
 
+    # Start the timer
     def increment(self):
         global routine
         self.timer += 1
