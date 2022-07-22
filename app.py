@@ -1,3 +1,4 @@
+from cgitb import text
 import time
 from turtle import width
 from db import *
@@ -9,11 +10,17 @@ if not os.path.isfile('main.db'):
         pass
 
 WIDTH = 200
-HEIGHT = 190
+HEIGHT = 230
 window_size = str(WIDTH)+'x'+str(HEIGHT)
 
 light_teal_bg_color = '#dbfcf1'
 font_color = '#27322e'
+btn_bg_color = '#f4fefb'
+
+hero_font_size = 12
+body_font_size = 5
+
+font_type = 'Open Sans'
 
 
 class MainWindow(tk.Frame):
@@ -23,47 +30,80 @@ class MainWindow(tk.Frame):
         self.master = master
         # Just start from zero.
         self.timer = 0
+
+        self.timer_val = tk.StringVar(self.master)
+
         self.render_widgets()
         self.increment()
-        self.clockTimer()
+        self.clock_timer()
         self.pack()
 
-        # Position the window
+        # Position where the window appears
         c = self.place_window_center(WIDTH, HEIGHT, -300)
         self.master.geometry("%dx%d+%d+%d" % (c[0], c[1], c[2], c[3]))
 
     def render_widgets(self):
         self.greeting = tk.Label(
-            self.master, text='Code Timer', fg=font_color, bg=light_teal_bg_color, font=10)
+            self.master, text='Code Timer', fg=font_color, bg=light_teal_bg_color, font=(font_type, hero_font_size))
 
         self.sign_on_time = tk.Label(
-            self.master, text='Start time:   ' + time.strftime("%I:%M %p"), fg=font_color, bg=light_teal_bg_color)
+            self.master, text='Start:  ' + time.strftime("%I:%M %p"), fg=font_color, bg=light_teal_bg_color)
         self.current_time = tk.Label(
             self.master, fg=font_color, bg=light_teal_bg_color)
 
         self.count = tk.Label(
             self.master, text=self.timer, fg=font_color, bg=light_teal_bg_color)
-        self.pauseBtn = tk.Button(
-            self.master, text="Pause", command=self.pause, fg=font_color)
+        self.timer_count = tk.Label(
+            self.master, textvariable=self.timer_val, fg=font_color, bg=light_teal_bg_color)
+        self.timer_btn = tk.Button(
+            self.master, text="Set timer", command=self.set_time, fg=font_color, bg=btn_bg_color)
+        self.timer_entry = tk.Entry(
+            self.master, width=5,  fg=font_color, bg=btn_bg_color)
+        self.pause_btn = tk.Button(
+            self.master, text="Pause", command=self.pause, fg=font_color, bg=btn_bg_color)
 
-        self.greeting.place(x=61, y=17)
-        self.sign_on_time.place(x=48, y=50)
-        self.current_time.place(x=40, y=75)
-        self.count.place(x=53, y=100)
-        self.pauseBtn.place(x=83, y=130)
+        self.greeting.place(x=58, y=17)
+        self.sign_on_time.place(x=64, y=50)
+        self.current_time.place(x=52, y=75)
 
-    def clockTimer(self):
+        self.count.place(x=67, y=97)
 
-        current_time = 'Current time: ' + time.strftime("%I:%M %p")
-        self.current_time.config(text=current_time)
-        self.current_time.after(100, self.clockTimer)
+        self.timer_count.place(x=61, y=117)
+
+        self.timer_btn.place(x=50, y=142)
+        self.timer_entry.place(x=115, y=146)
+        self.pause_btn.place(x=83, y=177)
+
+    def clock_timer(self):
+
+        total_time = 'Current:  ' + time.strftime("%I:%M %p")
+        self.current_time.config(text=total_time)
+        self.current_time.after(100, self.clock_timer)
+
+    def set_time(self):
+        timer = self.timer_entry.get()
+        self.timer_val.set('Timer: ' + str(timer) + ' mins')
+        self.timer_entry.after(int(timer)*60000, self.timer_expired)
+
+    def timer_expired(self):
+        self.alert_win = tk.Toplevel(self.master)
+        self.alert_win.resizable(False, False)
+
+        WIDTH_HEIGHT = 200, 100
+        c = self.place_window_center(
+            WIDTH_HEIGHT[0], WIDTH_HEIGHT[1], height_offset=-200)
+        self.alert_win.geometry("%dx%d+%d+%d" % (c[0], c[1], c[2], c[3]))
+
+        self.message = tk.Label(self.alert_win, text="Times Up.")
+        self.message.place(x=72, y=35)
 
     # Start the timer
+
     def increment(self):
         global routine
         self.timer += 1
         increment_timer(self.timer)
-        self.count['text'] = 'Total time: ' + str(self.timer) + ' min'
+        self.count['text'] = 'Total: ' + str(self.timer) + ' min'
         routine = self.after(60000, self.increment)
         return routine
 
@@ -71,14 +111,14 @@ class MainWindow(tk.Frame):
         global routine
         self.after_cancel(routine)
 
-        if self.pauseBtn.cget('text') == 'Pause':
+        if self.pause_btn.cget('text') == 'Pause':
             # Upon restart, offsets the added minute from increment()
             self.timer -= 1
-            self.pauseBtn.config(text='Start')
+            self.pause_btn.config(text='Start')
             self.after_cancel(routine)
 
         else:
-            self.pauseBtn.config(text='Pause')
+            self.pause_btn.config(text='Pause')
             self.increment()
 
     # Enter window size, and a height-offset if ness., returns coords
@@ -101,5 +141,6 @@ if __name__ == "__main__":
     root.title('Code Timer')
     root.config(bg=light_teal_bg_color)
     root.resizable(False, False)
+
     app = MainWindow(master=root)
     app.mainloop()
