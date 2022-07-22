@@ -4,3 +4,5 @@
 
 - Add an option to choose when an alert should go off after a 
   certain amount of time
+
+- Make an easy close button for the alert window

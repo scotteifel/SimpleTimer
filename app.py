@@ -1,16 +1,12 @@
-# from cgitb import text
-import os
-import time
-# from turtle import width
-from db import *
 import tkinter as tk
 from winsound import Beep
+
+import time
+
+from db import *
 from config import *
 
-path = os.getcwd()
-if not os.path.isfile('main.db'):
-    with open(os.path.join(path, 'main.db'), 'w+') as file:
-        pass
+init_db()
 
 
 class MainWindow(tk.Frame):
@@ -18,7 +14,7 @@ class MainWindow(tk.Frame):
     def __init__(self, master=None):
         super().__init__(master)
         self.master = master
-        # Just start from zero.
+        # Start the total time at 0 minutes
         self.timer = 0
 
         self.timer_val = tk.StringVar(self.master)
@@ -111,7 +107,7 @@ class MainWindow(tk.Frame):
         self.after_cancel(routine)
 
         if self.pause_btn.cget('text') == 'Pause':
-            # Upon restart, offsets the added minute from increment()
+            # Upon restart, offset the added minute from increment()
             self.timer -= 1
             self.pause_btn.config(text='Start')
             self.after_cancel(routine)
@@ -136,11 +132,9 @@ if __name__ == "__main__":
     root = tk.Tk()
     root.geometry(window_size)
 
-    # timer = start_timer()
     root.title('Code Timer')
     root.config(bg=light_teal_bg_color)
     root.resizable(False, False)
 
     app = MainWindow(master=root)
-
     app.mainloop()
