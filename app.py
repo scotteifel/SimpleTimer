@@ -97,6 +97,11 @@ class MainWindow(tk.Frame):
         self.message = tk.Label(self.alert_win, text="Times Up.")
         self.message.place(x=72, y=35)
 
+        # Make windows appear on top of other windows
+        self.alert_win.attributes('-topmost', True)
+        self.alert_win.update()
+        self.alert_win.attributes('-topmost', False)
+
     # Start the timer
 
     def increment(self):
@@ -143,4 +148,5 @@ if __name__ == "__main__":
     root.resizable(False, False)
 
     app = MainWindow(master=root)
+
     app.mainloop()
