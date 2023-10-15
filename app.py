@@ -30,17 +30,17 @@ class MainWindow(tk.Frame):
 
     def render_widgets(self):
         self.greeting = tk.Label(
-            self.master, text='Code Timer', fg=font_color, bg=light_teal_bg_color, font=(font_type, hero_font_size))
+            self.master, text='Code Timer', fg=font_color, bg=light_orange_color, font=(font_type, hero_font_size))
 
         self.sign_on_time = tk.Label(
-            self.master, text='Start:  ' + time.strftime("%I:%M %p"), fg=font_color, bg=light_teal_bg_color)
+            self.master, text='Start:  ' + time.strftime("%I:%M %p"), fg=font_color, bg=light_orange_color)
         self.current_time = tk.Label(
-            self.master, fg=font_color, bg=light_teal_bg_color)
+            self.master, fg=font_color, bg=light_orange_color)
 
         self.count = tk.Label(
-            self.master, text=self.timer, fg=font_color, bg=light_teal_bg_color)
+            self.master, text=self.timer, fg=font_color, bg=light_orange_color)
         self.timer_count = tk.Label(
-            self.master, textvariable=self.timer_val, fg=font_color, bg=light_teal_bg_color)
+            self.master, textvariable=self.timer_val, fg=font_color, bg=light_orange_color)
         self.timer_btn = tk.Button(
             self.master, text="Set timer", command=self.set_time, fg=font_color, bg=btn_bg_color)
         self.timer_entry = tk.Entry(
@@ -56,9 +56,9 @@ class MainWindow(tk.Frame):
 
         self.timer_count.place(x=61, y=117)
 
-        self.timer_btn.place(x=50, y=142)
-        self.timer_entry.place(x=115, y=146)
-        self.pause_btn.place(x=83, y=177)
+        self.timer_btn.place(x=50, y=137)
+        self.timer_entry.place(x=115, y=141)
+        self.pause_btn.place(x=83, y=176)
 
     def clock_timer(self):
 
@@ -133,7 +133,7 @@ if __name__ == "__main__":
     root.geometry(window_size)
 
     root.title('Code Timer')
-    root.config(bg=light_teal_bg_color)
+    root.config(bg=light_orange_color)
     root.resizable(False, False)
 
     app = MainWindow(master=root)
